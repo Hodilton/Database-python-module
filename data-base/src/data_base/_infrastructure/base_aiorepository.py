@@ -15,9 +15,9 @@ class BaseAioRepository(AioMySQLRepository):
         result = await super().fetch(query, params, fetch_mode="one")
         return result if isinstance(result, dict) else None
 
-    async def fetch_all(self, query_key: str, params: Tuple = ()) -> Union[List[dict], None]:
+    async def fetch_many(self, query_key: str, params: Tuple = ()) -> Union[List[dict], None]:
         query = self._resolve_query("fetch", query_key)
-        result = await super().fetch(query, params, fetch_mode="all")
+        result = await super().fetch(query, params, fetch_mode="many")
         return  result if isinstance(result, list) else None
 
     async def create(self) -> int:

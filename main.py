@@ -25,11 +25,11 @@ async def run():
             print("Fetched by ID:", user_by_id)
 
             # ---------- FETCH ALL ----------
-            all_users = await users_repo.fetch_all("all")
+            all_users = await users_repo.fetch_many("all")
             print("All users:", all_users)
 
             # ---------- FETCH ALL EXCEPT ----------
-            all_except = await users_repo.fetch_all("all_except", (user_id,))
+            all_except = await users_repo.fetch_many("all_except", (user_id,))
             print("All except ID:", all_except)
 
             # ---------- FETCH COUNT ----------
@@ -44,7 +44,7 @@ async def run():
 
             # ---------- DELETE ----------
             await users_repo.delete("by_id", (user_id,))
-            after_delete = await users_repo.fetch_all("all")
+            after_delete = await users_repo.fetch_many("all")
             print("All users after delete:", after_delete)
 
             # ---------- DROP ----------
