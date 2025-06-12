@@ -99,22 +99,22 @@ async def run():
             await users_repo.insert(("alice", "alice@example.com", "hashed_pw"))
             await users_repo.insert(("bob", "bob@example.com", "hashed_pw2"))
 
-            user = await users_repo.fetch_one("fetch.by_username", ("alice",))
+            user = await users_repo.fetch_one("by_username", ("alice",))
             print("Fetched user:", user)
 
             user_id = user["id"] if user else None
-            user_by_id = await users_repo.fetch_one("fetch.by_id", (user_id,))
+            user_by_id = await users_repo.fetch_one("by_id", (user_id,))
             print("Fetched by ID:", user_by_id)
 
-            all_users = await users_repo.fetch_all("fetch.all")
+            all_users = await users_repo.fetch_many("all")
             print("All users:", all_users)
 
             await users_repo.update(("alice_updated", "alice_new@example.com", "new_pw"), (user_id,))
-            updated_user = await users_repo.fetch_one("fetch.by_id", (user_id,))
+            updated_user = await users_repo.fetch_one("by_id", (user_id,))
             print("Updated user:", updated_user)
 
             await users_repo.delete("by_id", (user_id,))
-            after_delete = await users_repo.fetch_all("fetch.all")
+            after_delete = await users_repo.fetch_many("all")
             print("After delete:", after_delete)
 
     except DatabaseError as e:
