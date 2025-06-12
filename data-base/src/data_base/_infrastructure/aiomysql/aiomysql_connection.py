@@ -9,11 +9,13 @@ class AioMySQLConnection:
 
     async def connect(self) -> bool:
         try:
+            port = self._config.get("port", 3306)
             self._pool = await aiomysql.create_pool(
                 host=self._config["host"],
                 user=self._config["user"],
                 password=self._config["password"],
                 db=self._config["name"],
+                port=port,
                 autocommit=True
             )
             MsgDataBase.Success.connection_established()
