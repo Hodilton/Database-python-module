@@ -1,0 +1,9 @@
+{
+    "create": "CREATE TABLE IF NOT EXISTS practice_bases (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, description TEXT, capacity INT NOT NULL, year_id INT NOT NULL, course_id INT, group_id INT, supervisor_id INT NOT NULL, FOREIGN KEY (year_id) REFERENCES years(id), FOREIGN KEY (course_id) REFERENCES courses(id), FOREIGN KEY (group_id) REFERENCES groups(id), FOREIGN KEY (supervisor_id) REFERENCES users(id));",
+    "drop": "DROP TABLE IF EXISTS practice_bases;",
+    "insert": "INSERT INTO practice_bases (name, description, capacity, year_id, course_id, group_id, supervisor_id) VALUES (%s, %s, %s, %s, %s, %s, %s);",
+    "fetch": {
+      "by_filters": "SELECT pb.id, pb.name, pb.description, pb.capacity, u.username AS supervisor FROM practice_bases pb JOIN users u ON pb.supervisor_id = u.id WHERE pb.year_id = %s AND (pb.course_id = %s OR pb.group_id = %s OR (pb.course_id IS NULL AND pb.group_id IS NULL));",
+      "by_id": "SELECT pb.id, pb.name, pb.description, pb.capacity, pb.supervisor_id, u.username AS supervisor FROM practice_bases pb JOIN users u ON pb.supervisor_id = u.id WHERE pb.id = %s;"
+    }
+}

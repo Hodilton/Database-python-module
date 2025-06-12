@@ -1,0 +1,9 @@
+{
+    "create": "CREATE TABLE IF NOT EXISTS student_groups (student_id INT NOT NULL, group_id INT NOT NULL, PRIMARY KEY (student_id, group_id), FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE);",
+    "drop": "DROP TABLE IF EXISTS student_groups;",
+    "insert": "INSERT INTO student_groups (student_id, group_id) VALUES (%s, %s);",
+    "fetch": {
+      "by_student": "SELECT g.id, g.name, y.name AS year, c.name AS course FROM student_groups sg JOIN groups g ON sg.group_id = g.id JOIN years y ON g.year_id = y.id JOIN courses c ON g.course_id = c.id WHERE sg.student_id = %s;",
+      "by_group": "SELECT u.id, u.username FROM student_groups sg JOIN users u ON sg.student_id = u.id WHERE sg.group_id = %s;"
+    }
+}

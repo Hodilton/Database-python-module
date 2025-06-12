@@ -1,0 +1,9 @@
+{
+    "create": "CREATE TABLE IF NOT EXISTS groups_list (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50) NOT NULL, year_id INT NOT NULL, course_id INT NOT NULL, FOREIGN KEY (year_id) REFERENCES years(id), FOREIGN KEY (course_id) REFERENCES courses(id));",
+    "drop": "DROP TABLE IF EXISTS groups_list;",
+    "insert": "INSERT INTO groups_list (name, year_id, course_id) VALUES (%s, %s, %s);",
+    "fetch": {
+      "by_year_course": "SELECT id, name FROM groups_list WHERE year_id = %s AND course_id = %s;",
+      "by_year": "SELECT id, name, course_id FROM groups_list WHERE year_id = %s;"
+    }
+}

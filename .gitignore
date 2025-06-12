@@ -1,0 +1,7 @@
+# JetBrains IDE (PyCharm)
+/.idea
+
+__pycache__/
+venv/
+env/
+.venv/
