@@ -10,19 +10,24 @@ class Database:
     def __init__(self) -> None:
         self._db: Optional[DatabaseWrapper] = None
 
-    async def __aenter__(self) -> Optional[DatabaseWrapper]:
-        if Database._instance is None:
-            builder = DatabaseBuilder("config/database")
-            Database._instance = await builder.build()
-
-            if Database._instance is None:
+    @classmethod
+    async def init(cls, config_path: str = "config/database"):
+        if cls._instance is None:
+            builder = DatabaseBuilder(config_path)
+            cls._instance = await builder.build()
+            if cls._instance is None:
                 MsgDataBase.Failure.instance_build_failed()
                 raise DatabaseError("Database build failed.")
 
-        self._db = Database._instance
+    async def __aenter__(self) -> DatabaseWrapper:
+        if self._db is None:
+            if Database._instance is None:
+                MsgDataBase.Failure.instance_build_failed()
+                raise DatabaseError("Database not initialized")
+            self._db = Database._instance
         return self._db
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
 
     @classmethod
@@ -35,7 +40,7 @@ class Database:
     async def reset(cls):
         if cls._instance is None:
             MsgDataBase.Failure.instance_build_failed()
-            return
+            raise DatabaseError("Database not initialized")
 
         queries_dict = cls._instance.queries_dict
         table_names: List[str] = list(queries_dict.keys())
