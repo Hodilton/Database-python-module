@@ -17,6 +17,17 @@ class AioMySQLRepository:
             MsgDB.Failure.query_failed(query, str(e))
             return -1
 
+    async def _insert(self, query: str, params: Tuple = ()) -> int:
+        try:
+            async with self._pool.acquire() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(query, params)
+                    await conn.commit()
+                    return cur.lastrowid
+        except Exception as e:
+            MsgDB.Failure.query_failed(query, str(e))
+            return -1
+
     async def fetch(self, query: str, params: Tuple = (), fetch_mode="one") -> Any:
         try:
             async with self._pool.acquire() as conn:

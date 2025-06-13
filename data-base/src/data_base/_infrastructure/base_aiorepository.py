@@ -27,7 +27,7 @@ class BaseAioRepository(AioMySQLRepository):
         return await super().execute(self._queries["drop"])
 
     async def insert(self, data: Tuple) -> int:
-        return await super().execute(self._queries["insert"], data)
+        return await super()._insert(self._queries["insert"], data)
 
     async def update(self, data: Tuple, condition: Tuple) -> int:
         return await super().execute(self._queries["update"], (*data, *condition))
